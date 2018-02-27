@@ -1,10 +1,12 @@
 function createMarkup(data) {
   return `
-    <article class="gh-user">
-      <picture class="avatar">
-          <img src="${data.avatar_url}" alt="${data.name}" />
-      </picture>
-			<h1>
+		<article class="gh-user">
+			<div class="gh-picture">
+				<picture class="avatar">
+						<img src="${data.avatar_url}" alt="${data.name}" />
+				</picture>
+			</div>
+			<h1 class="gh-name">
 				<a href="" target="_blank">${data.name != null ? `${data.name}` : `${data.login}`}</a>
 			</h1>
       <div class="infos">

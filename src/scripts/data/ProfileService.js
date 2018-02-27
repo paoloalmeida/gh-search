@@ -1,9 +1,9 @@
-import renderProfile from '../components/Profile';
-import showHideButtons from '../utils/ShowHideButtons';
+import renderProfile from "../components/Profile";
+import showHideButtons from "../utils/ShowHideButtons";
 import { GITHUB_USERS } from "../data/Github";
 
 const searchInput = document.getElementById("input-search");
-const profile = document.getElementById('gh-profile');
+const profile = document.getElementById("gh-profile");
 
 export default function getProfile() {
   // join url + query from input
@@ -14,8 +14,9 @@ export default function getProfile() {
     .then(data => data.json())
     .then(data => renderProfile(data, profile))
     .then(function(data) {
-      console.log(data);
-      showHideButtons('show');
+      // enable buttons
+      profile.style.display = "block";
+      showHideButtons("show");
     })
     .catch(function(error) {
       console.log("Erro: ", error);

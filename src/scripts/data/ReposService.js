@@ -12,6 +12,10 @@ export default function getRepos() {
   fetch(url)
     .then(data => data.json())
     .then(data => renderRepos(data, repos))
+    .then(function() {
+      // enable list
+      repos.style.display = "flex";
+    })
     .catch(function(error) {
       console.log('Error: ', error);
     });
