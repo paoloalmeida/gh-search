@@ -48,7 +48,7 @@ module.exports = (options) => {
         }
       }]
     }
-    };
+  };
 
   if (options.isProduction) {
     webpackConfig.entry = ['./src/scripts/index'];
@@ -65,7 +65,16 @@ module.exports = (options) => {
     webpackConfig.module.rules.push({
       test: /\.s?css/i,
       use: ExtractSASS.extract(['css-loader?sourceMap=true&minimize=true', 'sass-loader'])
-    });
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 8192
+        }
+      }]
+    }
+  );
 
   } else {
     webpackConfig.plugins.push(
@@ -79,19 +88,15 @@ module.exports = (options) => {
       test: /\.js$/,
       use: 'eslint-loader',
       exclude: /node_modules/
-    }, 
-    {
+    }, {
       test: /\.(png|jpg|gif)$/,
-      use: [
-        {
-          loader: 'url-loader',
-          options: {
-            limit: 8192
-          }
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 8192
         }
-      ]
-    }
-    );
+      }]
+    });
 
     webpackConfig.devServer = {
       contentBase: dest,

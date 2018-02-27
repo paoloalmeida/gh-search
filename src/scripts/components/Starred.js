@@ -24,7 +24,6 @@ function createMarkup(data) {
 }
 
 export default function renderStarred(data, element) {
-  const markup = createMarkup(data);
-  element.innerHTML = markup;
+  element.innerHTML = createMarkup(data);
   return data;
 }
