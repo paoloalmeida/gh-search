@@ -1,31 +1,31 @@
-'use strict';
+"use strict";
 
-const Path = require('path');
-const Webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ExtractSASS = new ExtractTextPlugin('styles/bundle.[hash].css');
+const Path = require("path");
+const Webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractSASS = new ExtractTextPlugin("styles/bundle.[hash].css");
 
-module.exports = (options) => {
-  const dest = Path.join(__dirname, 'dist');
+module.exports = options => {
+  const dest = Path.join(__dirname, "dist");
 
   let webpackConfig = {
     devtool: options.devtool,
-    entry: [
-      './src/scripts/index'
-    ],
+    entry: ["./src/scripts/index"],
     output: {
       path: dest,
-      filename: 'bundle.[hash].js'
+      filename: "bundle.[hash].js"
     },
     plugins: [
       new Webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(options.isProduction ? 'production' : 'development')
+        "process.env": {
+          NODE_ENV: JSON.stringify(
+            options.isProduction ? "production" : "development"
+          )
         }
       }),
       new HtmlWebpackPlugin({
-        template: './src/index.html',
+        template: "./src/index.html",
         minify: options.isProduction && {
           collapseWhitespace: true,
           conservativeCollapse: true,
@@ -37,21 +37,23 @@ module.exports = (options) => {
       })
     ],
     module: {
-      rules: [{
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015']
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ["es2015"]
+            }
           }
         }
-      }]
+      ]
     }
   };
 
   if (options.isProduction) {
-    webpackConfig.entry = ['./src/scripts/index'];
+    webpackConfig.entry = ["./src/scripts/index"];
 
     webpackConfig.plugins.push(
       new Webpack.optimize.UglifyJsPlugin({
@@ -62,41 +64,45 @@ module.exports = (options) => {
       ExtractSASS
     );
 
-    webpackConfig.module.rules.push({
-      test: /\.s?css/i,
-      use: ExtractSASS.extract(['css-loader?sourceMap=true&minimize=true', 'sass-loader'])
-    }, {
-      test: /\.(png|jpg|gif)$/,
-      use: [{
-        loader: 'url-loader',
+    webpackConfig.module.rules.push(
+      {
+        test: /\.s?css/i,
+        use: ExtractSASS.extract([
+          "css-loader?sourceMap=true&minimize=true",
+          "sass-loader"
+        ])
+      },
+      {
+        test: /\.(png|jpe?g|gif)(\?.*)?$/,
+        loader: "url-loader",
         options: {
-          limit: 8192
+          limit: 10000,
+          publicPath: "../"
         }
-      }]
-    }
-  );
-
-  } else {
-    webpackConfig.plugins.push(
-      new Webpack.HotModuleReplacementPlugin()
+      }
     );
+  } else {
+    webpackConfig.plugins.push(new Webpack.HotModuleReplacementPlugin());
 
-    webpackConfig.module.rules.push({
-      test: /\.s?css$/i,
-      use: ['style-loader', 'css-loader?sourceMap=true', 'sass-loader']
-    }, {
-      test: /\.js$/,
-      use: 'eslint-loader',
-      exclude: /node_modules/
-    }, {
-      test: /\.(png|jpg|gif)$/,
-      use: [{
-        loader: 'url-loader',
+    webpackConfig.module.rules.push(
+      {
+        test: /\.s?css$/i,
+        use: ["style-loader", "css-loader?sourceMap=true", "sass-loader"]
+      },
+      {
+        test: /\.js$/,
+        use: "eslint-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpe?g|gif)(\?.*)?$/,
+        loader: "url-loader",
         options: {
-          limit: 8192
+          limit: 10000,
+          publicPath: "/"
         }
-      }]
-    });
+      }
+    );
 
     webpackConfig.devServer = {
       contentBase: dest,
@@ -107,5 +113,4 @@ module.exports = (options) => {
   }
 
   return webpackConfig;
-
 };
