@@ -30,7 +30,7 @@ body {
     @include transition(all .5s ease);
 
     @media screen and (max-width: 480px) {
-      width: 220px;
+      width: 200px;
     }
   }
 
