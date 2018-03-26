@@ -1,15 +1,11 @@
 {
   "name": "gh-search",
   "version": "1.0.0",
-  "description": "A light foundation for your next frontend project based on webpack.",
+  "description": "Github Search",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "webpack --config webpack-prod.config.js --colors",
     "dev": "webpack-dev-server --open --config webpack-dev.config.js --watch --colors"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wbkd/yet-another-webpack-es6-starterkit.git"
   },
   "keywords": [
     "webpack",
